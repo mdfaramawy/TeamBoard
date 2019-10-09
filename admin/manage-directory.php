@@ -2,7 +2,7 @@
 session_start();
 error_reporting(0);
 include('include/dbconnection.php');
-if (strlen($_SESSION['pdaid'] == 0)) {
+if (strlen($_SESSION['logid'] == 0)) {
   header('location:logout.php');
 } else {
 
@@ -72,10 +72,10 @@ if (strlen($_SESSION['pdaid'] == 0)) {
               </tr>
             </thead>
             <?php
-              $adminid = $_SESSION['pdaid'];
+              $loginid = $_SESSION['logid'];
               $ret = mysqli_query($con, "SELECT id, Interface , objectType , module , fileName , Notes ,  DATE_FORMAT(regDate, '%d/%m/%Y') AS regDate
                                         FROM  modifications
-                                        WHERE created_by = '$adminid'");
+                                        WHERE created_by = '$loginid'");
               $cnt = 1;
               while ($row = mysqli_fetch_array($ret)) {
                 ?>

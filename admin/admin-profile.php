@@ -2,7 +2,7 @@
 session_start();
 error_reporting(0);
 include('include/dbconnection.php');
-if (strlen($_SESSION['pdaid']==0)) {
+if (strlen($_SESSION['logid']==0)) {
   header('location:logout.php');
   } else{
 
@@ -10,7 +10,7 @@ if (strlen($_SESSION['pdaid']==0)) {
 if(isset($_POST['submit']))
   {
    
-    $userid=$_SESSION['pdaid'];
+    $userid=$_SESSION['logid'];
      $usrname=$_POST['FullName'];
    
      $query=mysqli_query($con, "update tbluser set FullName='$usrname' where ID='$userid'");
@@ -81,7 +81,7 @@ if(isset($_POST['submit']))
          <form name="directory" method="post">  
 <?php
   
-$userid=$_SESSION['pdaid'];
+$userid=$_SESSION['logid'];
 $ret=mysqli_query($con,"select * from tbluser where ID='$userid' ");
 $cnt=1;
 while ($row=mysqli_fetch_array($ret)) {

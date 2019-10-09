@@ -2,7 +2,7 @@
   session_start();
   error_reporting(0);
   include('include/dbconnection.php');
-  if (strlen($_SESSION['pdaid'] == 0)) {
+  if (strlen($_SESSION['logid'] == 0)) {
     header('location:logout.php');
   } else {
     if (isset($_POST['submit'])) {
@@ -12,7 +12,7 @@
       $compfile1  = $_FILES["file_1"]["name"];
       $compfile2  = $_FILES["file_2"]["name"];
       $compfile3  = $_FILES["file_3"]["name"];
-      $created_by = $_SESSION['pdaid'];
+      $created_by = $_SESSION['logid'];
       // check if file_1 is not empty
       if (!empty($_FILES['file_1'])) {
         $path = "uploads/";

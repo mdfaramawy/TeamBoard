@@ -7,9 +7,12 @@ if (isset($_POST['login'])) {
 	$username = $_POST['username'];
 	$password = md5($_POST['password']);
 	$query = mysqli_query($con, "select ID from tbluser where  username='$username' && Password='$password' ");
+	$query_admin = mysqli_query($con, "select admin_yn from tbluser where  username='$username' && Password='$password' ");
+	$ret_admin = mysqli_fetch_array($query_admin);
 	$ret = mysqli_fetch_array($query);
 	if ($ret > 0) {
-		$_SESSION['pdaid'] = $ret['ID'];
+		$_SESSION['logid'] = $ret['ID'];
+		$_SESSION['admin_ind'] = $ret['admin_yn'];
 		header('location:admin/manage-directory.php');
 	} else {
 		$msg = "Invalid Details.";

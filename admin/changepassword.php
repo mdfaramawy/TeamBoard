@@ -3,18 +3,18 @@ session_start();
 error_reporting(0);
 include('include/dbconnection.php');
 error_reporting(0);
-if (strlen($_SESSION['pdaid']==0)) {
+if (strlen($_SESSION['logid']==0)) {
   header('location:logout.php');
   } else{
 if(isset($_POST['submit']))
 {
-$adminid=$_SESSION['pdaid'];
+$userid=$_SESSION['logid'];
 $cpassword=md5($_POST['currentpassword']);
 $newpassword=md5($_POST['newpassword']);
-$query=mysqli_query($con,"select ID from tbluser where ID='$adminid' and   Password='$cpassword'");
+$query=mysqli_query($con,"select ID from tbluser where ID='$userid' and   Password='$cpassword'");
 $row=mysqli_fetch_array($query);
 if($row>0){
-$ret=mysqli_query($con,"update tbluser set Password='$newpassword' where ID='$adminid'");
+$ret=mysqli_query($con,"update tbluser set Password='$newpassword' where ID='$userid'");
 $msg= "Your password successully changed"; 
 } else {
 
@@ -99,8 +99,8 @@ return true;
         
 <?php
   
-$adminid=$_SESSION['pdaid'];
-$ret=mysqli_query($con,"select * from tbluser where ID='$adminid'");
+$userid=$_SESSION['logid'];
+$ret=mysqli_query($con,"select * from tbluser where ID='$userid'");
 $cnt=1;
 while ($row=mysqli_fetch_array($ret)) {
 

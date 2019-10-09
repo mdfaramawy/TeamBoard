@@ -3,7 +3,7 @@ session_start();
 error_reporting(0);
 include('admin/include/dbconnection.php');
 
-if (strlen($_SESSION['pdaid']==0)) {
+if (strlen($_SESSION['logid']==0)) {
   header('location:logout.php');
   } 
 
@@ -65,16 +65,15 @@ if (strlen($_SESSION['pdaid']==0)) {
                   <i class="fas fa-fw fa-comments"></i>
                 </div>
 <?php 
-$adminid=$_SESSION['pdaid'];
+$userid=$_SESSION['logid'];
 
-$query_m=mysqli_query($con,"Select * from modifications where created_by = '$adminid' ");
+$query_m=mysqli_query($con,"Select * from modifications where created_by = '$userid' ");
 $usercount_m=mysqli_num_rows($query_m);
 
-$query_t=mysqli_query($con,"Select * from team_borad where created_by = '$adminid' ");
+$query_t=mysqli_query($con,"Select * from team_borad where created_by = '$userid' ");
 $usercount_t=mysqli_num_rows($query_t);
 
 $usercount = $usercount_m + $usercount_t ;
-echo $adminid . "#" . mysqli_num_rows($query_m);
 ?>
 
                 <div class="mr-5"><?php echo $usercount;?> Total Records!</div>
@@ -96,8 +95,8 @@ echo $adminid . "#" . mysqli_num_rows($query_m);
                   <i class="fas fa-fw fa-list"></i>
                 </div>
                 <?php 
-				$adminid=$_SESSION['pdaid'];	
-				$query1=mysqli_query($con,"Select * from modifications where created_by = '$adminid' ");
+				$userid=$_SESSION['logid'];	
+				$query1=mysqli_query($con,"Select * from modifications where created_by = '$userid' ");
 $modcount=mysqli_num_rows($query1);
 ?>
                 <div class="mr-5"><?php echo $modcount;?>  Total Modifications! </div>
@@ -117,8 +116,8 @@ $modcount=mysqli_num_rows($query1);
                   <i class="fas fa-fw fa-shopping-cart"></i>
                 </div>
                 <?php 
-				$adminid=$_SESSION['pdaid'];	
-				$query1=mysqli_query($con,"Select * from team_borad where created_by = '$adminid' ");
+				$userid=$_SESSION['logid'];	
+				$query1=mysqli_query($con,"Select * from team_borad where created_by = '$userid' ");
 $pricount=mysqli_num_rows($query2);
 ?>
                 <div class="mr-5"><?php echo $pricount;?> Total Support / UR  Records!</div>
