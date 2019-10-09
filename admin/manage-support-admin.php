@@ -5,17 +5,19 @@ include('include/dbconnection.php');
 if (strlen($_SESSION['logid'] == 0)) {
   header('location:logout.php');
 } else {
- ?>
+  ?>
   <!DOCTYPE html>
   <html lang="en">
+
   <head>
-   <meta charset="utf-8">
+
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SIT TeamBoard System</title>
+    <title>SIT Customers Tracker</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -29,13 +31,9 @@ if (strlen($_SESSION['logid'] == 0)) {
   </head>
 
   <body id="page-top">
-
-
     <!-- Navbar -->
-
     <?php include('include/header.php'); ?>
     <div id="wrapper">
-
       <!-- Sidebar -->
       <?php include('include/sidebar.php'); ?>
 
@@ -48,27 +46,26 @@ if (strlen($_SESSION['logid'] == 0)) {
             <li class="breadcrumb-item">
               <a href="dashboard.php">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Manage Customers</li>
+            <li class="breadcrumb-item active">Manage Support / UR / Plan</li>
           </ol>
           <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
             <thead>
               <tr>
                 <th>#</th>
-                <th>Created By</th>
-                <th>Object Type</th>
-                <th>Module</th>
-                <th align="right">Notes</th>
-                <th>regDate</th>
-                <th>sentDate</th>
+                <th>Date</th>
+                <th>User</th>
+                <th align="right">Plan</th>                
+                <th align="right">Strategy</th>
+                <th align="right">Support</th>
                 <th>Action</th>
               </tr>
             </thead>
             <?php
-              $loginid = $_SESSION['logid'];
-              $admin_yn = $_SESSION['admin_ind'] ;
+              $logid = $_SESSION['logid'];
+              $admin_yn = $_SESSION['admin_ind'];
               if ($admin_yn == 1) {
-                $ret = mysqli_query($con, "SELECT mod_id,emp_name,objectType,module,Notes,regDate,sentDate
-                                           FROM  users_modifications");
+                $ret = mysqli_query($con, "SELECT support_id,emp_name,planTxt,strategyTxt ,supportTxt, remarkDate
+                                           FROM  sit_teamboard");
               } else {
                 header('location:logout.php');
               }
@@ -77,13 +74,12 @@ if (strlen($_SESSION['logid'] == 0)) {
                 ?>
               <tr>
                 <td><?php echo $cnt; ?></td>
+                <td><?php echo $row['remarkDate']; ?></td>
                 <td><?php echo $row['emp_name']; ?></td>
-                <td><?php echo $row['objectType']; ?></td>
-                <td><?php echo $row['module']; ?></td>
-                <td><?php echo $row['Notes']; ?></td>
-                <td><?php echo $row['regDate']; ?></td>
-                <td><?php echo $row['sentDate']; ?></td>
-                <td><a href="edit-directory-admin.php?editid=<?php echo $row['mod_id']; ?>" >
+                <td><?php echo $row['planTxt']; ?></td>
+                <td><?php echo $row['strategyTxt']; ?></td>                
+                <td><?php echo $row['supportTxt']; ?></td>
+                <td><a href="edit-support-admin.php?editid=<?php echo $row['support_id']; ?>" >
                 <img src="../img/comment.png" height=20 widyh=20> reply</a>
               </tr>
             <?php
@@ -109,6 +105,7 @@ if (strlen($_SESSION['logid'] == 0)) {
     <a class="scroll-to-top rounded" href="#page-top">
       <i class="fas fa-angle-up"></i>
     </a>
+
     <!-- Logout Modal-->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -127,6 +124,7 @@ if (strlen($_SESSION['logid'] == 0)) {
         </div>
       </div>
     </div>
+
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

@@ -5,35 +5,37 @@ include('include/dbconnection.php');
 if (strlen($_SESSION['logid'] == 0)) {
   header('location:logout.php');
 } else {
-  ?>
+ ?>
   <!DOCTYPE html>
   <html lang="en">
-
   <head>
-
-    <meta charset="utf-8">
+   <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SIT Customers Tracker</title>
+    <title>SIT TeamBoard System</title>
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
-    <!-- Page level plugin CSS-->
-    <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+<!-- Page level plugin CSS-->
+<link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
 
-    <!-- Custom styles for this template-->
-    <link href="css/sb-admin.css" rel="stylesheet">
+<!-- Custom styles for this template-->
+<link href="css/sb-admin.css" rel="stylesheet">
 
   </head>
 
   <body id="page-top">
+
+
     <!-- Navbar -->
+
     <?php include('include/header.php'); ?>
     <div id="wrapper">
+
       <!-- Sidebar -->
       <?php include('include/sidebar.php'); ?>
 
@@ -46,34 +48,48 @@ if (strlen($_SESSION['logid'] == 0)) {
             <li class="breadcrumb-item">
               <a href="dashboard.php">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Manage Support / UR / Plan</li>
+            <li class="breadcrumb-item active">Manage Customers</li>
           </ol>
           <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
             <thead>
               <tr>
                 <th>#</th>
+                <th>User</th>
+<!--                <th>Object Type</th>
+                <th>Module</th>
+-->                
+                <th align="right">Notes</th>
                 <th>Date</th>
-                <th align="right">Strategy</th>
-                <th align="right">Plan</th>
-                <th align="right">Support</th>                
+<!--                <th>sentDate</th>
+-->
                 <th>Action</th>
               </tr>
             </thead>
-            <?php            
-              $logid = $_SESSION['logid'];
-              $ret = mysqli_query($con, "SELECT id, supportTxt , planTxt , strategyTxt , file_1, file_2 , file_3, DATE_FORMAT(remarkDate, '%d/%m/%Y') AS remarkDate
-                                        FROM  team_board
-                                        WHERE createdby = '$logid'");
+            <?php
+              $loginid = $_SESSION['logid'];
+              $admin_yn = $_SESSION['admin_ind'] ;
+              if ($admin_yn == 1) {
+                $ret = mysqli_query($con, "SELECT mod_id,emp_name,objectType,module,Notes,regDate,sentDate
+                                           FROM  users_modifications");
+              } else {
+                header('location:logout.php');
+              }
               $cnt = 1;
               while ($row = mysqli_fetch_array($ret)) {
                 ?>
               <tr>
                 <td><?php echo $cnt; ?></td>
-                <td><?php echo $row['remarkDate']; ?></td>
-                <td><?php echo $row['strategyTxt']; ?></td>
-                <td><?php echo $row['planTxt']; ?></td>
-                <td><?php echo $row['supportTxt']; ?></td>
-                <td><a href="edit-support.php?editid=<?php echo $row['id']; ?>">Edit Detail</a>
+                <td><?php echo $row['emp_name']; ?></td>
+<!--
+                <td><?php echo $row['objectType']; ?></td>
+                <td><?php echo $row['module']; ?></td>
+              -->                
+                <td><?php echo $row['Notes']; ?></td>
+                <td><?php echo $row['regDate']; ?></td>
+<!--                <td><?php echo $row['sentDate']; ?></td>
+              -->
+                <td><a href="edit-mod-admin.php?editid=<?php echo $row['mod_id']; ?>" >
+                <img src="../img/comment.png" height=20 widyh=20> reply</a>
               </tr>
             <?php
                 $cnt = $cnt + 1;
@@ -98,7 +114,6 @@ if (strlen($_SESSION['logid'] == 0)) {
     <a class="scroll-to-top rounded" href="#page-top">
       <i class="fas fa-angle-up"></i>
     </a>
-
     <!-- Logout Modal-->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -117,26 +132,24 @@ if (strlen($_SESSION['logid'] == 0)) {
         </div>
       </div>
     </div>
+<!-- Bootstrap core JavaScript-->
+<script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <!-- Page level plugin JavaScript-->
+  <script src="vendor/chart.js/Chart.min.js"></script>
+  <script src="vendor/datatables/jquery.dataTables.js"></script>
+  <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
 
-    <!-- Page level plugin JavaScript-->
-    <script src="vendor/chart.js/Chart.min.js"></script>
-    <script src="vendor/datatables/jquery.dataTables.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin.min.js"></script>
 
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin.min.js"></script>
-
-    <!-- Demo scripts for this page-->
-    <script src="js/demo/datatables-demo.js"></script>
-    <script src="js/demo/chart-area-demo.js"></script>
-
+  <!-- Demo scripts for this page-->
+  <script src="js/demo/datatables-demo.js"></script>
+  <script src="js/demo/chart-area-demo.js"></script>
   </body>
 
   </html>

@@ -5,7 +5,13 @@ include('include/dbconnection.php');
 if (strlen($_SESSION['logid'] == 0)) {
   header('location:logout.php');
 } else {
+
+
+
   ?>
+
+
+
   <!DOCTYPE html>
   <html lang="en">
 
@@ -31,9 +37,13 @@ if (strlen($_SESSION['logid'] == 0)) {
   </head>
 
   <body id="page-top">
+
+
     <!-- Navbar -->
+
     <?php include('include/header.php'); ?>
     <div id="wrapper">
+
       <!-- Sidebar -->
       <?php include('include/sidebar.php'); ?>
 
@@ -46,34 +56,47 @@ if (strlen($_SESSION['logid'] == 0)) {
             <li class="breadcrumb-item">
               <a href="dashboard.php">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Manage Support / UR / Plan</li>
+            <li class="breadcrumb-item active">Manage Customers</li>
           </ol>
           <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
             <thead>
               <tr>
                 <th>#</th>
+                <th>Interface</th>
+<!--
+                <th>Object Type</th>
+                <th>Module</th>
+                <th>File</th>
+-->                
+                <th align="right">Notes</th>
                 <th>Date</th>
-                <th align="right">Strategy</th>
-                <th align="right">Plan</th>
-                <th align="right">Support</th>                
                 <th>Action</th>
               </tr>
             </thead>
-            <?php            
-              $logid = $_SESSION['logid'];
-              $ret = mysqli_query($con, "SELECT id, supportTxt , planTxt , strategyTxt , file_1, file_2 , file_3, DATE_FORMAT(remarkDate, '%d/%m/%Y') AS remarkDate
-                                        FROM  team_board
-                                        WHERE createdby = '$logid'");
+            <?php
+              $loginid = $_SESSION['logid'];
+              $admin_ind = $_SESSION['admin_ind'];
+              if ($admin_ind == 1) {
+                $ret = mysqli_query($con, "SELECT id, Interface , objectType , module , fileName , Notes ,  DATE_FORMAT(regDate, '%d/%m/%Y') AS regDate
+                                        FROM  modifications");
+              } else {
+                $ret = mysqli_query($con, "SELECT id, Interface , objectType , module , fileName , Notes ,  DATE_FORMAT(regDate, '%d/%m/%Y') AS regDate
+                                          FROM  modifications
+                                          WHERE created_by = '$loginid'");
+              }
               $cnt = 1;
               while ($row = mysqli_fetch_array($ret)) {
                 ?>
               <tr>
                 <td><?php echo $cnt; ?></td>
-                <td><?php echo $row['remarkDate']; ?></td>
-                <td><?php echo $row['strategyTxt']; ?></td>
-                <td><?php echo $row['planTxt']; ?></td>
-                <td><?php echo $row['supportTxt']; ?></td>
-                <td><a href="edit-support.php?editid=<?php echo $row['id']; ?>">Edit Detail</a>
+                <td><?php echo $row['Interface']; ?></td>
+<!--                <td><?php echo $row['objectType']; ?></td>
+                <td><?php echo $row['module']; ?></td>
+                <td><?php echo $row['fileName']; ?></td>
+              -->                
+                <td><?php echo $row['Notes']; ?></td>
+                <td><?php echo $row['regDate']; ?></td>
+                <td><a href="edit-mod.php?editid=<?php echo $row['id']; ?>">Edit Detail</a>
               </tr>
             <?php
                 $cnt = $cnt + 1;

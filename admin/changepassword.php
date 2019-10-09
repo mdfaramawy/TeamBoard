@@ -32,7 +32,7 @@ $msg="Your current password is wrong";
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html dir="rtl">
 
 <head>
 

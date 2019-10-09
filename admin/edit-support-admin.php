@@ -6,41 +6,10 @@ if (strlen($_SESSION['logid'] == 0)) {
   header('location:logout.php');
 } else {
   if (isset($_POST['submit'])) {
-    $supportTxt  = $_POST['supportTxt'];
-    $planTxt     = $_POST['planTxt'];
-    $strategyTxt = $_POST['strategyTxt'];
-    $compfile1   = $_FILES["file_1"]["name"];
-    $compfile2   = $_FILES["file_2"]["name"];
-    $compfile3   = $_FILES["file_3"]["name"];
-    $created_by  = $_SESSION['logid'];
+    $adminMsg  = $_POST['adminMsg'];
     $pdid = $_GET['editid'];
-    // check if file_1 is not empty
-    if (!empty($_FILES['file_1'])) {
-      $path = "uploads/";
-      $path = $path . basename($compfile1);
-      move_uploaded_file($_FILES['file_1']['tmp_name'], $path);
-    }
-
-    // check if file_2 is not empty
-    if (!empty($_FILES['file_2'])) {
-      $path = "uploads/";
-      $path = $path . basename($compfile2);
-      move_uploaded_file($_FILES['file_2']['tmp_name'], $path);
-    }
-
-    // check if file_3 is not empty
-    if (!empty($_FILES['file_3'])) {
-      $path = "uploads/";
-      $path = $path . basename($compfile3);
-      move_uploaded_file($_FILES['file_3']['tmp_name'], $path);
-    }
     $query = mysqli_query($con, "update team_board
-                                   set  supportTxt  = '$supportTxt',
-                                        planTxt     = '$planTxt',
-                                        strategyTxt = '$strategyTxt',
-                                        file_1      = '$compfile1',
-                                        file_2      = '$compfile2',
-                                        file_3      = '$compfile3'
+                                   set  adminMsg  = '$adminMsg'
                                   Where id          = $pdid");
     if ($query) {
       $msg = "Record has been updated.";
@@ -110,7 +79,7 @@ if (strlen($_SESSION['logid'] == 0)) {
 
         <?php
         $pdid = $_GET['editid'];
-        $ret = mysqli_query($con, "SELECT id, supportTxt , planTxt , strategyTxt , file_1, file_2 , file_3, DATE_FORMAT(remarkDate, '%d/%m/%Y') AS remarkDate
+        $ret = mysqli_query($con, "SELECT id, supportTxt , planTxt , strategyTxt , file_1, file_2 , file_3, DATE_FORMAT(remarkDate, '%d/%m/%Y') AS remarkDate, adminMsg
                                    FROM  team_board
                                    WHERE id = '$pdid'");
         $cnt = 1;
@@ -119,24 +88,45 @@ if (strlen($_SESSION['logid'] == 0)) {
           <!-- DataTables Example -->
           <form name="directory" method="post" enctype="multipart/form-data">
             <div class="form-group">
+              <div>
+                <p style="text-align: center; "><button type="submit" name="submit" class="btn btn-info btn-min-width mr-1 mb-1">Update</button></p>
+              </div>
+              <label for="createdBy"> Created By </label>
+              <div class="form-label-group">
+                <input type="text" id="createdBy" name="createdBy" style="text-align:center;" value="<?php
+                                                                                                        $pdid = $_GET['editid'];
+                                                                                                        $sqluser = mysqli_query($con, "SELECT fullName 
+                                                                                                                                        FROM   tbluser t, team_board m
+                                                                                                                                        WHERE  t.id=  m.createdBy and m.id= '$pdid'  limit 1 ");
+                                                                                                        $value = mysqli_fetch_array($sqluser);
+                                                                                                        echo $value[0];
+                                                                                                        ?>" disabled>
+              </div>
+              <div class="form-row">
+                <label for="adminMsg"> Admin Message</label>
+                <textarea name="adminMsg" style="width:100%;text-align:right;background-color:powderblue;font-size:24px" rows="3" autofocus="autofocus"><?php echo $row['adminMsg']; ?></textarea>
+
+              </div>
+            </div>
+            <div class="form-group">
               <div class="form-row">
                 <div class="col-md-4">
                   <div class="form-group">
                     <div class="form-row">
                       <label for="strategyTxt"> Strategy</label>
-                      <textarea name="strategyTxt" style="width:100%;text-align:right" rows="3">
+                      <textarea name="strategyTxt" style="width:100%;text-align:right" rows="3" disabled>
                     <?php echo $row['strategyTxt']; ?></textarea>
                     </div>
                   </div>
                 </div>
                 <div class="col-md-4">
                   <label for="planTxt"> Plan</label>
-                  <textarea name="planTxt" style="width:100%;text-align:right" rows="3">
+                  <textarea name="planTxt" style="width:100%;text-align:right" rows="3" disabled>
                   <?php echo $row['planTxt']; ?></textarea>
                 </div>
                 <div class="col-md-4">
                   <label for="supportTxt"> Support</label>
-                  <textarea name="supportTxt" style="width:100%;text-align:right" rows="3">
+                  <textarea name="supportTxt" style="width:100%;text-align:right" rows="3" disabled>
                   <?php echo $row['supportTxt']; ?></textarea>
                 </div>
               </div>
@@ -144,44 +134,60 @@ if (strlen($_SESSION['logid'] == 0)) {
               <div class="form-row">
                 <div class="col-md-4">
                   <div class="form-label-group">
-                    <input type="file" id="file_1" name="file_1">
+                    <input type="file" id="file_1" name="file_1" disabled>
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-label-group">
-                    <input type="file" id="file_2" name="file_2">
+                    <input type="file" id="file_2" name="file_2" disabled>
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-label-group">
-                    <input type="file" id="file_3" name="file_3">
+                    <input type="file" id="file_3" name="file_3" disabled>
                   </div>
                 </div>
               </div>
               <div class="form-group">
-               <div class="form-row">
-                 <div class="col-md-4">                 
-                   <div class="form-label-group">
-                   <a href="uploads/<?php echo $row['file_1']; ?>"><?php echo $row['file_1']; ?> </a>
-                   </div>
-                 </div>
-                 <div class="col-md-4">
-                   <div class="form-label-group">
-                   <a href="uploads/<?php echo $row['file_2']; ?>"><?php echo $row['file_2']; ?> </a>
-                   </div>
-                 </div>
-                 <div class="col-md-4">
-                   <div class="form-label-group">
-                   <a href="uploads/<?php echo $row['file_3']; ?>"><?php echo $row['file_3']; ?> </a>
-                   </div>
-                 </div>
-               </div>
-             </div>
+                <div class="form-row">
+                  <div class="col-md-4">
+                    <div class="form-label-group">
+                      <a href="uploads/<?php echo $row['file_1']; ?>"><?php echo $row['file_1']; ?> </a>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-label-group">
+                      <a href="uploads/<?php echo $row['file_2']; ?>"><?php echo $row['file_2']; ?> </a>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-label-group">
+                      <a href="uploads/<?php echo $row['file_3']; ?>"><?php echo $row['file_3']; ?> </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="form-row">
+                  <div class="col-md-4">
+                    <div class="form-label-group">
+                      <a href="uploads/<?php echo $row['file_1']; ?>"><?php echo $row['file_1']; ?> </a>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-label-group">
+                      <a href="uploads/<?php echo $row['file_2']; ?>"><?php echo $row['file_2']; ?> </a>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-label-group">
+                      <a href="uploads/<?php echo $row['file_3']; ?>"><?php echo $row['file_3']; ?> </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-            </div>
-            <div>
-              <p style="text-align: center; "><button type="submit" name="submit" class="btn btn-info btn-min-width mr-1 mb-1">Update</button></p>
-            </div>
           </form>
 
       </div>

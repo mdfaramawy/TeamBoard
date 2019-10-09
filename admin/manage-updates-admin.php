@@ -5,13 +5,7 @@ include('include/dbconnection.php');
 if (strlen($_SESSION['logid'] == 0)) {
   header('location:logout.php');
 } else {
-
-
-
   ?>
-
-
-
   <!DOCTYPE html>
   <html lang="en">
 
@@ -37,13 +31,9 @@ if (strlen($_SESSION['logid'] == 0)) {
   </head>
 
   <body id="page-top">
-
-
     <!-- Navbar -->
-
     <?php include('include/header.php'); ?>
     <div id="wrapper">
-
       <!-- Sidebar -->
       <?php include('include/sidebar.php'); ?>
 
@@ -56,44 +46,39 @@ if (strlen($_SESSION['logid'] == 0)) {
             <li class="breadcrumb-item">
               <a href="dashboard.php">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Manage Customers</li>
+            <li class="breadcrumb-item active">Manage Support / UR / Plan</li>
           </ol>
           <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
             <thead>
               <tr>
                 <th>#</th>
-                <th>Interface</th>
-                <th>Object Type</th>
-                <th>Module</th>
-                <th>File</th>
-                <th align="right">Notes</th>
                 <th>Date</th>
+                <th>User</th>
+                <th>Customer</th>
+                <th>Notes</th>
                 <th>Action</th>
               </tr>
             </thead>
             <?php
-              $loginid = $_SESSION['logid'];
-              $admin_ind = $_SESSION['admin_ind'];
-              if ($admin_ind == 1) {
-                $ret = mysqli_query($con, "SELECT id, Interface , objectType , module , fileName , Notes ,  DATE_FORMAT(regDate, '%d/%m/%Y') AS regDate
-                                        FROM  modifications");
+              $logid = $_SESSION['logid'];
+              $admin_yn = $_SESSION['admin_ind'];
+              if ($admin_yn == 1) {
+                $ret = mysqli_query($con, "SELECT update_id, cstName , notes ,  emp_name,remarkDate
+                                           FROM  customers_updates");
               } else {
-                $ret = mysqli_query($con, "SELECT id, Interface , objectType , module , fileName , Notes ,  DATE_FORMAT(regDate, '%d/%m/%Y') AS regDate
-                                          FROM  modifications
-                                          WHERE created_by = '$loginid'");
+                header('location:logout.php');
               }
               $cnt = 1;
               while ($row = mysqli_fetch_array($ret)) {
                 ?>
               <tr>
                 <td><?php echo $cnt; ?></td>
-                <td><?php echo $row['Interface']; ?></td>
-                <td><?php echo $row['objectType']; ?></td>
-                <td><?php echo $row['module']; ?></td>
-                <td><?php echo $row['fileName']; ?></td>
-                <td><?php echo $row['Notes']; ?></td>
-                <td><?php echo $row['regDate']; ?></td>
-                <td><a href="edit-directory.php?editid=<?php echo $row['id']; ?>">Edit Detail</a>
+                <td><?php echo $row['remarkDate']; ?></td>
+                <td><?php echo $row['emp_name']; ?></td>
+                <td><?php echo $row['cstName']; ?></td>
+                <td><?php echo $row['notes']; ?></td>
+                <td><a href="edit-updates-admin.php?editid=<?php echo $row['update_id']; ?>">
+                    Details</a>
               </tr>
             <?php
                 $cnt = $cnt + 1;

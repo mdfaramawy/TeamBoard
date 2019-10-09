@@ -3,15 +3,15 @@ session_start();
 error_reporting(0);
 include('admin/include/dbconnection.php');
 
-if (strlen($_SESSION['logid']==0)) {
+if (strlen($_SESSION['logid'] == 0)) {
   header('location:logout.php');
-  } 
+}
 
-     ?>
+?>
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
 
@@ -36,13 +36,13 @@ if (strlen($_SESSION['logid']==0)) {
 
 <body id="page-top">
 
-  <?php include('include/header.php');?>
-   
+  <?php include('include/header.php'); ?>
+
 
   <div id="wrapper">
 
-     <?php include('include/sidebar.php');?>
-    
+    <?php include('include/sidebar.php'); ?>
+
 
     <div id="content-wrapper">
 
@@ -64,28 +64,33 @@ if (strlen($_SESSION['logid']==0)) {
                 <div class="card-body-icon">
                   <i class="fas fa-fw fa-comments"></i>
                 </div>
-<?php 
-$userid=$_SESSION['logid'];
+                <div class="mr-5"><?php
+                                  $userid = $_SESSION['logid'];
+                                  $admin_yn = $_SESSION['admin_ind'];
+                                  if ($admin_yn == 1) {
+                                    $sql01 = mysqli_query($con, "SELECT count(*) FROM  team_board limit 1 ");
+                                    $count01 = mysqli_fetch_array($sql01);
+                                  } else {
+                                    $sql02 = mysqli_query($con, "SELECT count(*) from team_board  where created_by = '$userid' limit 1");
+                                    $count01 = mysqli_fetch_array($sl02);
+                                  }
 
-$query_m=mysqli_query($con,"Select * from modifications where created_by = '$userid' ");
-$usercount_m=mysqli_num_rows($query_m);
-
-$query_t=mysqli_query($con,"Select * from team_borad where created_by = '$userid' ");
-$usercount_t=mysqli_num_rows($query_t);
-
-$usercount = $usercount_m + $usercount_t ;
-?>
-
-                <div class="mr-5"><?php echo $usercount;?> Total Records!</div>
+                                  echo $count01[0]; ?> Total Plans, Support!</div>
               </div>
-              <!--
-              <a class="card-footer text-white clearfix small z-1" href="manage-directory.php">
+              <a class="card-footer text-white clearfix small z-1" href="<?php
+                                                                          $admin_yn = $_SESSION['admin_ind'];
+                                                                          if ($admin_yn == 1) {
+                                                                            echo "manage-support-admin.php";
+                                                                          } else {
+                                                                            echo "manage-support.php";
+                                                                          }
+                                                                          ?>">
                 <span class="float-left">View Details</span>
                 <span class="float-right">
                   <i class="fas fa-angle-right"></i>
                 </span>
               </a>
--->
+
             </div>
           </div>
           <div class="col-xl-4 col-sm-6 mb-3">
@@ -94,14 +99,28 @@ $usercount = $usercount_m + $usercount_t ;
                 <div class="card-body-icon">
                   <i class="fas fa-fw fa-list"></i>
                 </div>
-                <?php 
-				$userid=$_SESSION['logid'];	
-				$query1=mysqli_query($con,"Select * from modifications where created_by = '$userid' ");
-$modcount=mysqli_num_rows($query1);
-?>
-                <div class="mr-5"><?php echo $modcount;?>  Total Modifications! </div>
+                <?php
+                $userid = $_SESSION['logid'];
+                $admin_yn = $_SESSION['admin_ind'];
+                if ($admin_yn == 1) {
+                  $query1 = mysqli_query($con, "Select * from cst_updates ");
+                  $cstcount = mysqli_num_rows($query1);
+                } else {
+                  $queryusr = mysqli_query($con, "Select * from cst_updates where created_by = '$userid' ");
+                  $cstcount = mysqli_num_rows($queryusr);
+                }
+
+                ?>
+                <div class="mr-5"><?php echo $cstcount; ?> Total Updates ! </div>
               </div>
-              <a class="card-footer text-white clearfix small z-1" href="manage-directory.php">
+              <a class="card-footer text-white clearfix small z-1" href="<?php
+                                                                          $admin_yn = $_SESSION['admin_ind'];
+                                                                          if ($admin_yn == 1) {
+                                                                            echo "manage-updates-admin.php";
+                                                                          } else {
+                                                                            echo "manage-updates.php";
+                                                                          }
+                                                                          ?>">
                 <span class="float-left">View Details</span>
                 <span class="float-right">
                   <i class="fas fa-angle-right"></i>
@@ -115,14 +134,28 @@ $modcount=mysqli_num_rows($query1);
                 <div class="card-body-icon">
                   <i class="fas fa-fw fa-shopping-cart"></i>
                 </div>
-                <?php 
-				$userid=$_SESSION['logid'];	
-				$query1=mysqli_query($con,"Select * from team_borad where created_by = '$userid' ");
-$pricount=mysqli_num_rows($query2);
-?>
-                <div class="mr-5"><?php echo $pricount;?> Total Support / UR  Records!</div>
+                <?php
+                $userid = $_SESSION['logid'];
+                $admin_yn = $_SESSION['admin_ind'];
+                if ($admin_yn == 1) {
+                  $query1 = mysqli_query($con, "Select * from modifications ");
+                  $modcount = mysqli_num_rows($query1);
+                } else {
+                  $queryusr = mysqli_query($con, "Select * from modifications where created_by = '$userid' ");
+                  $modcount = mysqli_num_rows($queryusr);
+                }
+
+                ?>
+                <div class="mr-5"><?php echo $modcount; ?> Total Modifications!</div>
               </div>
-              <a class="card-footer text-white clearfix small z-1" href="manage-support.php">
+              <a class="card-footer text-white clearfix small z-1" href="<?php
+                                                                          $admin_yn = $_SESSION['admin_ind'];
+                                                                          if ($admin_yn == 1) {
+                                                                            echo "manage-mod-admin.php";
+                                                                          } else {
+                                                                            echo "manage-mod.php";
+                                                                          }
+                                                                          ?>">
                 <span class="float-left">View Details</span>
                 <span class="float-right">
                   <i class="fas fa-angle-right"></i>
@@ -130,19 +163,19 @@ $pricount=mysqli_num_rows($query2);
               </a>
             </div>
           </div>
-        
+
         </div>
 
         <!-- Area Chart Example-->
-      
 
-        
+
+
 
       </div>
       <!-- /.container-fluid -->
 
       <!-- Sticky Footer -->
-       <?php include('include/footer.php');?>
+      <?php include('include/footer.php'); ?>
 
     </div>
     <!-- /.content-wrapper -->

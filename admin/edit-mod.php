@@ -2,7 +2,7 @@
   session_start();
   error_reporting(0);
   include('include/dbconnection.php');
-  if (strlen($_SESSION['pdaid'] == 0)) {
+  if (strlen($_SESSION['logid'] == 0)) {
     header('location:logout.php');
   } else {
       if (isset($_POST['submit'])) {

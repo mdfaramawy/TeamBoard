@@ -106,7 +106,7 @@ while ($row=mysqli_fetch_array($ret)) {
                   <td><?php  echo $row['CustomerName'];?></td>
                   <td><?php  echo $row['LastUpdate'];?></td>
                 
-                  <td><a href="edit-directory.php?editid=<?php echo $row['ID'];?>">Edit Detail</a>
+                  <td><a href="edit-mod.php?editid=<?php echo $row['ID'];?>">Edit Detail</a>
                 </tr>
                 <?php 
 $cnt=$cnt+1;

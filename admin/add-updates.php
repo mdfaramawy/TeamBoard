@@ -6,12 +6,15 @@
     header('location:logout.php');
   } else {
     if (isset($_POST['submit'])) {
-      $supportTxt     = $_POST['supportTxt'];
-      $planTxt     = $_POST['planTxt'];
-      $strategyTxt   = $_POST['strategyTxt'];
+      $cstName     = $_POST['cstName'];
+      $LastUpdate     = $_POST['LastUpdate'];
+      $notes      = $_POST['notes'];
       $compfile1  = $_FILES["file_1"]["name"];
       $compfile2  = $_FILES["file_2"]["name"];
       $compfile3  = $_FILES["file_3"]["name"];
+      $compfile4  = $_FILES["file_4"]["name"];
+      $compfile5  = $_FILES["file_5"]["name"];
+      $compfile6  = $_FILES["file_6"]["name"];
       $created_by = $_SESSION['logid'];
       // check if file_1 is not empty
       if (!empty($_FILES['file_1'])) {
@@ -34,10 +37,31 @@
         move_uploaded_file($_FILES['file_3']['tmp_name'], $path);
       }
 
-      $query = mysqli_query($con, "insert into  team_board(createdBy,supportTxt,planTxt,strategyTxt, file_1, file_2, file_3) 
-	                                                  value   ('$created_by','$supportTxt','$planTxt','$strategyTxt', '$compfile1', '$compfile2' , '$compfile3' )");
+      // check if file_4 is not empty
+      if (!empty($_FILES['file_4'])) {
+        $path = "uploads/";
+        $path = $path . basename($compfile4);
+        move_uploaded_file($_FILES['file_4']['tmp_name'], $path);
+      }
+
+      // check if file_5 is not empty
+      if (!empty($_FILES['file_5'])) {
+        $path = "uploads/";
+        $path = $path . basename($compfile6);
+        move_uploaded_file($_FILES['file_5']['tmp_name'], $path);
+      }
+
+      // check if file_6 is not empty
+      if (!empty($_FILES['file_6'])) {
+        $path = "uploads/";
+        $path = $path . basename($compfile6);
+        move_uploaded_file($_FILES['file_6']['tmp_name'], $path);
+      }
+      $query = mysqli_query($con, "insert into  cst_updates(cstName,LastUpdate,notes,created_by,file_1, file_2, file_3, file_4, file_5) 
+                                                  value    ('$cstName','$LastUpdate','$notes','$created_by' ,  '$compfile1', 
+                                                            '$compfile2' , '$compfile3' , '$compfile4', '$compfile5')");
       if ($query) {
-        $msg = "Support / UR  detail has been added.";
+        $msg = "Customer detail has been added.";
       } else {
         $msg = "Something Went Wrong. Please try again" . mysqli_error($con);
       }
@@ -93,7 +117,7 @@
            <li class="breadcrumb-item">
              <a href="dashboard.php">Dashboard</a>
            </li>
-           <li class="breadcrumb-item active">Add Support / UR / Plan...</li>
+           <li class="breadcrumb-item active">Add Customer</li>
          </ol>
          <p style="font-size:16px; color:green" align="center"> <?php if ($msg) {
                                                                   echo $msg;
@@ -107,23 +131,29 @@
          <form name="directory" method="post" enctype="multipart/form-data">
            <div class="form-group">
              <div class="form-row">
-               <div class="col-md-4">
-                 <div class="form-group">
-                   <div class="form-row">
-                     <label for="strategyTxt"> Strategy</label>
-                     <textarea name="strategyTxt" style="width:100%;text-align:right" rows="3"></textarea>
-                   </div>
+               <div class="col-md-6">
+                 <label for="cstName"> Customer Name</label>
+                 <div class="form-label-group">
+                   <input type="text" name="cstName" id="cstName" class="form-control wd-450" required="true" autofocus="autofocus">
                  </div>
                </div>
-               <div class="col-md-4">
-                 <label for="planTxt"> Plan</label>
-                 <textarea name="planTxt" style="width:100%;text-align:right" rows="3"></textarea>
-               </div>
-               <div class="col-md-4">
-               <label for="supportTxt"> Support</label>
-                     <textarea name="supportTxt" style="width:100%;text-align:right" rows="3"></textarea>
+               <div class="col-md-6">
+                 <label for="LastUpdate"> Last Update</label>
+                 <div class="form-label-group">
+                   <input type="date" name="LastUpdate" id="LastUpdate" class="form-control wd-450" required="true">
+                 </div>
                </div>
              </div>
+           </div>
+
+           <div class="form-group">
+             <div class="form-row">
+               <label for="notes"> Notes</label>
+               <textarea name="notes" style="width:100%;text-align:right" rows="3"></textarea>
+             </div>
+           </div>
+
+           <div class="form-group">
              <div class="form-row">
                <div class="col-md-4">
                  <div class="form-label-group">
@@ -132,12 +162,33 @@
                </div>
                <div class="col-md-4">
                  <div class="form-label-group">
-                   <input type="file" id="file_2" name="file_2">
+                  <input type="file" id="file_2" name="file_2">
                  </div>
                </div>
                <div class="col-md-4">
                  <div class="form-label-group">
                    <input type="file" id="file_3" name="file_3">
+                 </div>
+               </div>
+             </div>
+           </div>
+           <div class="form-group">
+             <div class="form-row">
+                 <div class="col-md-4">
+                   <div class="form-label-group">
+                     <input type="file" id="file_4" name="file_4">
+                   </div>
+                 </div>
+
+                 <div class="col-md-4">
+                   <div class="form-label-group">
+                     <input type="file" id="file_5" name="file_5">
+                   </div>
+                 </div>
+                 <div class="col-md-4">
+                   <div class="form-label-group">
+                     <input type="file" id="file_6" name="file_6">
+                   </div>
                  </div>
                </div>
              </div>

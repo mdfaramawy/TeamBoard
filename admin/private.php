@@ -81,7 +81,7 @@ while ($row=mysqli_fetch_array($ret)) {
                   <td><?php echo $cnt;?></td>              
                   <td><?php  echo $row['CustomerName'];?></td>
                   <td><?php  echo $row['LastUpdate'];?></td>                
-                  <td><a href="view-directory.php?editid=<?php echo $row['id'];?>">View </a>
+                  <td><a href="view-mod.php?editid=<?php echo $row['id'];?>">View </a>
                 </tr>
                 <?php 
 $cnt=$cnt+1;

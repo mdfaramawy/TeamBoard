@@ -46,34 +46,32 @@ if (strlen($_SESSION['logid'] == 0)) {
             <li class="breadcrumb-item">
               <a href="dashboard.php">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Manage Support / UR / Plan</li>
+            <li class="breadcrumb-item active">Manage Customer Updates</li>
           </ol>
           <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
             <thead>
               <tr>
                 <th>#</th>
                 <th>Date</th>
-                <th align="right">Strategy</th>
-                <th align="right">Plan</th>
-                <th align="right">Support</th>                
+                <th align="right">Customer</th>
+                <th align="right">Notes</th>
                 <th>Action</th>
               </tr>
             </thead>
             <?php            
               $logid = $_SESSION['logid'];
-              $ret = mysqli_query($con, "SELECT id, supportTxt , planTxt , strategyTxt , file_1, file_2 , file_3, DATE_FORMAT(remarkDate, '%d/%m/%Y') AS remarkDate
-                                        FROM  team_board
-                                        WHERE createdby = '$logid'");
+              $ret = mysqli_query($con, "SELECT id, cstName , notes, DATE_FORMAT(LastUpdate, '%d/%m/%Y') AS LastkDate
+                                         FROM  cst_updates
+                                         WHERE created_by = '$logid'");
               $cnt = 1;
               while ($row = mysqli_fetch_array($ret)) {
                 ?>
               <tr>
                 <td><?php echo $cnt; ?></td>
-                <td><?php echo $row['remarkDate']; ?></td>
-                <td><?php echo $row['strategyTxt']; ?></td>
-                <td><?php echo $row['planTxt']; ?></td>
-                <td><?php echo $row['supportTxt']; ?></td>
-                <td><a href="edit-support.php?editid=<?php echo $row['id']; ?>">Edit Detail</a>
+                <td><?php echo $row['LastDate']; ?></td>
+                <td><?php echo $row['cstName']; ?></td>
+                <td><?php echo $row['notes']; ?></td>
+                <td><a href="edit-updates.php?editid=<?php echo $row['id']; ?>">Edit Detail</a>
               </tr>
             <?php
                 $cnt = $cnt + 1;
