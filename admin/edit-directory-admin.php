@@ -17,7 +17,7 @@ if (strlen($_SESSION['logid'] == 0)) {
     $compfile2  = $_FILES["file_2"]["name"];
     $compfile3  = $_FILES["file_3"]["name"];
     $created_by = $_SESSION['pdaid'];
-    $adminMsg = $_POST['adminMsg'];
+    $adminMsg  = $_POST['adminMsg'];
     $pdid = $_GET['editid'];
     // check if file_1 is not empty
     if (!empty($_FILES['file_1'])) {
@@ -112,9 +112,9 @@ if (strlen($_SESSION['logid'] == 0)) {
         $pdid = $_GET['editid'];
         $admin_yn = $_SESSION['admin_ind'];
         if ($admin_yn == 1) {
-          $ret = mysqli_query($con, "SELECT id, Interface , objectType , module , fileName , Notes ,  descAr , datesent, file_1, adminMsg
-              FROM  modifications
-              WHERE id= '$pdid'");
+          $ret = mysqli_query($con, "SELECT id, Interface , objectType , module , fileName , Notes ,  descAr , datesent, file_1, adminMsg,created_by
+                                    FROM  modifications
+                                    WHERE id= '$pdid'");
         } else {
           header('location:logout.php');
         }
@@ -123,20 +123,29 @@ if (strlen($_SESSION['logid'] == 0)) {
           ?>
           <!-- DataTables Example -->
           <form name="directory" method="post" enctype="multipart/form-data">
-            <div class="form-group">              
-            <div>
-              <p style="text-align: center; "><button type="submit" name="submit" class="btn btn-info btn-min-width mr-1 mb-1">UPDATE</button></p>
-            </div>
-            <div class="form-label-group">
-                    <input type="text" id="descar" name="descar" value="<?php echo $row['descAr']; ?>" disabled>
-                  </div>
             <div class="form-group">
-              <div class="form-row" >
-                <label for="adminMsg"> Admin Message</label>
-                <textarea name="adminMsg" style="width:100%;text-align:right;background-color:powderblue;font-size:24px" rows="3"   autofocus="autofocus"><?php echo $row['adminMsg']; ?></textarea>
-                
+              <div>
+                <p style="text-align: center; "><button type="submit" name="submit" class="btn btn-info btn-min-width mr-1 mb-1">UPDATE</button></p>
               </div>
-            </div>
+			  <label for="createdBy"> Created By </label>
+              <div class="form-label-group">
+                <input type="text" id="createdBy" name="createdBy" style="text-align:center;" value="<?php
+                                                                                                        $pdid = $_GET['editid'];
+                                                                                                        $sqluser = mysqli_query($con, "SELECT fullName 
+                                               FROM   tbluser t, modifications m
+                                               WHERE  t.id=  m.created_by and m.id= '$pdid'  limit 1 ");
+                                                                                                        $value = mysqli_fetch_array($sqluser);
+                                                                                                        echo $value[0];
+                                                                                                        ?>" disabled>
+              </div>
+			  <br>
+              <div class="form-group">
+                <div class="form-row">
+                  <label for="adminMsg"> Admin Message</label>
+                  <textarea name="adminMsg" style="width:100%;text-align:right;background-color:powderblue;font-size:24px" rows="3" autofocus="autofocus"><?php echo $row['adminMsg']; ?></textarea>
+
+                </div>
+              </div>
               <div class="form-row">
                 <div class="col-md-4">
                   <label for="module"> Module</label>
@@ -291,7 +300,7 @@ if (strlen($_SESSION['logid'] == 0)) {
             </div>
 
             <div class="form-group">
-              <div class="form-row">                
+              <div class="form-row">
                 <label for="notes"> Notes</label>
                 <textarea name="notes" style="width:100%;text-align:right" rows="3" disabled>
                 <?php echo $row['Notes']; ?>
@@ -361,7 +370,7 @@ if (strlen($_SESSION['logid'] == 0)) {
               </div>
             </div>
 
-            
+
           </form>
 
       </div>
