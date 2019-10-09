@@ -34,7 +34,7 @@ $msg="This username  associated with another account";
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>SIT Customers Tracker - Signup</title>
+	<title>SIT TeamBoard System - Signup</title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/datepicker3.css" rel="stylesheet">
 	<link href="css/styles.css" rel="stylesheet">
@@ -53,14 +53,14 @@ return true;
 </script>
 <body>
 	<div class="row">
-			<h2 align="center">SIT Customers Tracker</h2>
+			<h2 align="center">SIT TeamBoard System</h2>
 	<hr />
 		<div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
 			<div class="login-panel panel panel-default">
 				<div class="panel-heading">Sign Up</div>
 				<div class="panel-body">
 					<form role="form" action="" method="post" id="" name="signup" onsubmit="return checkpass();">
-						<p style="font-size:16px; color:green" align="center"> <?php if($msg){
+						<p style="font-size:16px; color:red" align="center"><?php if($msg){
     echo $msg;
   }  ?> </p>
 						<fieldset>
