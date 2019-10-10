@@ -143,10 +143,11 @@ if (strlen($_SESSION['logid'] == 0)) {
         $pdid = $_GET['editid'];
         $admin_yn = $_SESSION['admin_ind'];
         if ($admin_yn == 1) {
-          $ret = mysqli_query($con, "SELECT id, cstName , notes ,  lastUpdate,file_1, file_2, file_3, file_4, file_5, file_6
-              FROM  cst_updates");
+          $ret = mysqli_query($con, "SELECT update_id,emp_name,cstName ,notes, lastUpdate
+          FROM customers_updates
+          WHERE update_id =$pdid");
         } else {
-          header("location:logout.php")
+          header("location:logout.php");
         }
         $cnt = 1;
         while ($row = mysqli_fetch_array($ret)) {
@@ -161,7 +162,7 @@ if (strlen($_SESSION['logid'] == 0)) {
                 <div class="col-md-4">
                   <label for="cstName"> User</label>
                   <div class="form-label-group">
-                    <input type="text" name="cstName" id="cstName" class="form-control wd-450" required="true" value="<?php  ?>" disabled>
+                    <input type="text" name="cstName" id="cstName" class="form-control wd-450" required="true" value="<?php echo $row['emp_name']; ?>" disabled>
                   </div>
                 </div>
                 <div class="col-md-4">
@@ -263,7 +264,7 @@ if (strlen($_SESSION['logid'] == 0)) {
             </div>
       </div>
       <div>
-        <p style="text-align: center; "><button type="submit" name="submit" class="btn btn-info btn-min-width mr-1 mb-1">Update</button></p>
+        <p style="text-align: center; "><button type="submit" name="submit" class="btn btn-info btn-min-width mr-1 mb-1">OK</button></p>
       </div>
       </form>
 

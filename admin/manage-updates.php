@@ -60,7 +60,7 @@ if (strlen($_SESSION['logid'] == 0)) {
             </thead>
             <?php            
               $logid = $_SESSION['logid'];
-              $ret = mysqli_query($con, "SELECT id, cstName , notes, DATE_FORMAT(LastUpdate, '%d/%m/%Y') AS LastkDate
+              $ret = mysqli_query($con, "SELECT id, cstName , notes, LastUpdate
                                          FROM  cst_updates
                                          WHERE created_by = '$logid'");
               $cnt = 1;
@@ -68,7 +68,7 @@ if (strlen($_SESSION['logid'] == 0)) {
                 ?>
               <tr>
                 <td><?php echo $cnt; ?></td>
-                <td><?php echo $row['LastDate']; ?></td>
+                <td><?php echo $row['LastUpdate']; ?></td>
                 <td><?php echo $row['cstName']; ?></td>
                 <td><?php echo $row['notes']; ?></td>
                 <td><a href="edit-updates.php?editid=<?php echo $row['id']; ?>">Edit Detail</a>

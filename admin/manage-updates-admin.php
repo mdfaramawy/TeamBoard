@@ -63,7 +63,7 @@ if (strlen($_SESSION['logid'] == 0)) {
               $logid = $_SESSION['logid'];
               $admin_yn = $_SESSION['admin_ind'];
               if ($admin_yn == 1) {
-                $ret = mysqli_query($con, "SELECT update_id, cstName , notes ,  emp_name,remarkDate
+                $ret = mysqli_query($con, "SELECT update_id, cstName , notes ,  emp_name,lastUpdate
                                            FROM  customers_updates");
               } else {
                 header('location:logout.php');
@@ -73,7 +73,7 @@ if (strlen($_SESSION['logid'] == 0)) {
                 ?>
               <tr>
                 <td><?php echo $cnt; ?></td>
-                <td><?php echo $row['remarkDate']; ?></td>
+                <td><?php echo $row['lastUpdate']; ?></td>
                 <td><?php echo $row['emp_name']; ?></td>
                 <td><?php echo $row['cstName']; ?></td>
                 <td><?php echo $row['notes']; ?></td>
